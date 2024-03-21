@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+    <div class="tank-cards-container">
+        {% for tank in tanks %}
+            <div class="tank-card">
+                <a href="{% url 'tank_info' tank_id=tank.id %}">
+                    <img src="{{ tank.image.url }}" alt="{{ tank.name }}" draggable="false">
+                </a>
+                <h2>{{ tank.name }}</h2>
+                <p class="card-description">{{ tank.description }}</p>
+                <p class="card-owner">Владелец: {{ tank.owner.username }}</p>
+                {% if tank.is_for_sale and request.user != tank.owner %}
+                    <div><a href="{% url 'tank_info' tank_id=tank.id %}">Купить</a></div>
+                {% endif %}
+            </div>
+
+        {% empty %}
+            <p>No tanks available.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

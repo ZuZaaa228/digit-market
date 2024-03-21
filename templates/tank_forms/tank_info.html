@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+<style>
+
+</style>
+
+{% block content %}
+    <div class="tank-info-container">
+        <div class="tank-info-base">
+            <div class="tank-info-text">
+                <h1>{{ tank.name }}</h1>
+                <p>{{ tank.description }}</p>
+            </div>
+            <div class="tank-info-image">
+                <img src="{{ tank.image.url }}" alt="{{ tank.name }}">
+            </div>
+        </div>
+
+
+        {% if request.user == tank.owner and not tank.is_for_sale %}
+            <div class="tank-method">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_transfer.as_p }}
+                    <button type="submit" name="transfer">Transfer</button>
+                </form>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_sell.as_p }}
+                    <button type="submit" name="sell">Sell</button>
+                </form>
+            </div>
+
+
+        {% else %}
+            {% if tank.is_for_sale and request.user != tank.owner %}
+                <form method="post">
+                    {% csrf_token %}
+                    <p>Цена: {{ sales.price }}</p>
+                    <p>Ваш баланс: {{ request.user.balance }}</p>
+
+                    {% if request.user.balance > sales.price %}
+                        <button type="submit" name="buy">Buy</button>
+                    {% else %}
+                        <p>Средств не достаточно</p>
+                        <button type="submit" name="buy" disabled>Buy</button>
+                    {% endif %}
+                </form>
+            {% endif %}
+
+        {% endif %}
+    </div>
+{% endblock %}

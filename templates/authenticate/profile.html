@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="profile-container">
+        <div class="profile-form-container">
+            <div class="profile-user-form">
+                <h2>Мой профиль</h2>
+                <form method="post" class="profile-form">
+                    {% csrf_token %}
+                    {{ user_change_form.as_p }}
+                    {{ password_change_form.as_p }}
+                    <button type="submit">Сохранить изменения</button>
+                </form>
+            </div>
+            <div class="profile-balance">
+                <h1>Баланс</h1>
+                <h1>Текущий баланс: {{ request.user.balance }}</h1>
+                <form method="post" class="balance-form">
+                    {% csrf_token %}
+                    {{ balance_form.as_p }}
+                    <button type="submit">Добавить баланс</button>
+                </form>
+            </div>
+        </div>
+
+
+        <h1>Мои танки</h1>
+        <ul class="tank-list">
+            {% for tank in my_tanks %}
+                <div class="tank-card">
+                    <li class="tank-item">{{ tank.name }} - {{ tank.owner }}</li>
+                    <img src="{{ tank.image.url }}" alt="{{ tank.name }}" class="tank-image">
+                </div>
+
+            {% empty %}
+                <li>Танков не найдено.</li>
+            {% endfor %}
+        </ul>
+
+        <h1>Все танки</h1>
+        <ul class="tank-list">
+            {% for tank in all_tanks %}
+                <div class="tank-card">
+                    <li class="tank-item">{{ tank.name }} - {{ tank.owner }}</li>
+                    <a href="{% url 'tank_info' tank_id=tank.id %}">
+                        <img src="{{ tank.image.url }}" alt="{{ tank.name }}" class="tank-image">
+                    </a>
+                </div>
+
+            {% empty %}
+                <li>Танков не найдено.</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+
+
+{#{% block content %}#}
+{#    <h2>Мой профиль</h2>#}
+{#    <form method="post">#}
+{#        {% csrf_token %}#}
+{#        {{ user_change_form.as_p }}#}
+{#        {{ password_change_form.as_p }}#}
+{#        <button type="submit">Save changes</button>#}
+{#    </form>#}
+{##}
+{#    <h1>Баланс</h1>#}
+{#    <form method="post">#}
+{#        {% csrf_token %}#}
+{#        {{ balance_form.as_p }}#}
+{#        <button type="submit">Add balance</button>#}
+{#    </form>#}
+{##}
+{#    {% load static %}#}
+{#    <h1>Мои танчики</h1>#}
+{#    <ul>#}
+{#        {% for tank in my_tanks %}#}
+{#            <li>{{ tank.name }} - {{ tank.owner }}</li>#}
+{#            <img src="{{ tank.image.url }}" alt="{{ tank.name }}">#}
+{#        {% empty %}#}
+{#            <li>No tanks found.</li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
+{##}
+{#    <h1>Все танчики</h1>#}
+{#    <ul>#}
+{#        {% for tank in all_tanks %}#}
+{#            <li>{{ tank.name }} - {{ tank.owner }}</li>#}
+{#            <img src="{{ tank.image.url }}" alt="{{ tank.name }}">#}
+{#        {% empty %}#}
+{#            <li>No tanks found.</li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
+{##}
+{##}
+{#{% endblock %}#}

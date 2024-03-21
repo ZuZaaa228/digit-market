@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Создать фантик</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="field">
+            <label for="id_name">Название:</label>
+            {{ form.name }}
+        </div>
+        <div class="field">
+            <label for="id_description">Описание:</label>
+            {{ form.description }}
+        </div>
+        <div class="field">
+            <label for="id_image">Изображение:</label>
+            {{ form.image }}
+        </div>
+        <button type="submit">Создать</button>
+    </form>
+{% endblock %}
